@@ -1,6 +1,14 @@
-# Task Tracker with Supabase
+# Task Tracker with Supabase & Authentication
 
-A simple task management application built with React, TypeScript, and Ant Design. This frontend is ready for you to connect to your Supabase database.
+A complete task management application built with React, TypeScript, Ant Design, and React Router. Features authentication flow and protected routes, ready for Supabase integration.
+
+## ✨ New Features
+
+- 🔐 **Authentication System** with login/signup pages
+- 🛡️ **Protected Routes** - Tasks page requires authentication
+- 🚦 **React Router** for navigation
+- 👤 **User Context** for state management
+- 🔄 **Mock Authentication** (ready for Supabase integration)
 
 ## Features
 
@@ -11,10 +19,18 @@ A simple task management application built with React, TypeScript, and Ant Desig
 - 🎯 Priority levels (Low, Medium, High)
 - 📅 Due date tracking
 - 🏷️ Status management (Pending, In Progress, Completed)
+- 🔐 User authentication and protected routes
+
+## Routes
+
+- `/login` - Login page (public)
+- `/signup` - Sign up page (public)
+- `/tasks` - Task management dashboard (protected)
+- `/` - Redirects to `/tasks`
 
 ## Current State
 
-The application currently uses **mock data stored in localStorage** for demonstration purposes. All the frontend components are ready, and you can practice connecting it to your Supabase database.
+The application currently uses **mock authentication and localStorage** for task data. All components are ready for Supabase integration.
 
 ## Getting Started
 
@@ -101,12 +117,19 @@ src/
 │   ├── TaskFormModal.tsx      # Create/Edit task modal
 │   ├── TaskTable.tsx          # Tasks display table
 │   ├── TaskStats.tsx          # Statistics dashboard
-│   └── TaskFilters.tsx        # Search and filter controls
+│   ├── TaskFilters.tsx        # Search and filter controls
+│   └── ProtectedRoute.tsx     # Route protection component
+├── contexts/
+│   └── AuthContext.tsx        # Authentication context & state
+├── pages/
+│   ├── LoginPage.tsx          # Login page
+│   ├── SignUpPage.tsx         # Sign up page
+│   └── TasksPage.tsx          # Main task dashboard
 ├── services/
 │   └── taskService.ts         # API service layer (YOUR INTEGRATION POINT)
 ├── types/
 │   └── Task.ts               # TypeScript interfaces
-├── App.tsx                   # Main application component
+├── App.tsx                   # Main app with routing
 └── supabase-client.ts        # Supabase client configuration
 ```
 
