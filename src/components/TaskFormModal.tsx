@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, DatePicker, message } from "antd";
 import { CreateTaskRequest } from "../types/Task";
 import dayjs from "dayjs";
@@ -23,6 +23,24 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  // Reset form fields when modal opens or initialValues change
+  useEffect(() => {
+    if (visible) {
+      if (initialValues) {
+        // For editing - set the form values
+        form.setFieldsValue({
+          ...initialValues,
+          due_date: initialValues.due_date
+            ? dayjs(initialValues.due_date)
+            : undefined,
+        });
+      } else {
+        // For creating - reset to empty
+        form.resetFields();
+      }
+    }
+  }, [visible, initialValues, form]);
 
   const handleSubmit = async () => {
     try {
@@ -68,12 +86,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          ...initialValues,
-          due_date: initialValues?.due_date
-            ? dayjs(initialValues.due_date)
-            : undefined,
-        }}
+        // Remove initialValues from here since we're handling it in useEffect
       >
         <Form.Item
           name="title"
