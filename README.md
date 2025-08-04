@@ -1,4 +1,152 @@
-# Getting Started with Create React App
+# Task Tracker with Supabase
+
+A simple task management application built with React, TypeScript, and Ant Design. This frontend is ready for you to connect to your Supabase database.
+
+## Features
+
+- ✅ Create, Read, Update, Delete (CRUD) operations for tasks
+- 📊 Task statistics dashboard
+- 🔍 Search and filter functionality
+- 📱 Responsive design with Ant Design
+- 🎯 Priority levels (Low, Medium, High)
+- 📅 Due date tracking
+- 🏷️ Status management (Pending, In Progress, Completed)
+
+## Current State
+
+The application currently uses **mock data stored in localStorage** for demonstration purposes. All the frontend components are ready, and you can practice connecting it to your Supabase database.
+
+## Getting Started
+
+1. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables:**
+   Update the `.env` file in the root directory:
+
+   ```env
+   REACT_APP_SUPABASE_URL=your_supabase_project_url
+   REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+3. **Run the application:**
+   ```bash
+   npm start
+   ```
+
+## Database Schema
+
+When you're ready to connect to Supabase, create a table with this schema:
+
+```sql
+CREATE TABLE tasks (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL CHECK (status IN ('pending', 'in-progress', 'completed')),
+  priority TEXT NOT NULL CHECK (priority IN ('low', 'medium', 'high')),
+  due_date TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Create an updated_at trigger
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_tasks_updated_at
+    BEFORE UPDATE ON tasks
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+```
+
+## Connecting to Supabase
+
+The API integration points are clearly marked in `/src/services/taskService.ts`. Look for the `TODO` comments to replace mock implementations with actual Supabase calls.
+
+### Example API Integration
+
+Here's how to replace the mock `getAllTasks` method:
+
+```typescript
+async getAllTasks(): Promise<Task[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tasks')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    throw error;
+  }
+}
+```
+
+## File Structure
+
+```
+src/
+├── components/
+│   ├── TaskFormModal.tsx      # Create/Edit task modal
+│   ├── TaskTable.tsx          # Tasks display table
+│   ├── TaskStats.tsx          # Statistics dashboard
+│   └── TaskFilters.tsx        # Search and filter controls
+├── services/
+│   └── taskService.ts         # API service layer (YOUR INTEGRATION POINT)
+├── types/
+│   └── Task.ts               # TypeScript interfaces
+├── App.tsx                   # Main application component
+└── supabase-client.ts        # Supabase client configuration
+```
+
+## Available Scripts
+
+- `npm start` - Run the development server
+- `npm build` - Build for production
+- `npm test` - Run tests
+- `npm run eject` - Eject from Create React App
+
+## Next Steps for Database Integration
+
+1. **Set up your Supabase project** and get your URL and anon key
+2. **Create the tasks table** using the schema provided above
+3. **Update the environment variables** in `.env`
+4. **Replace the mock implementations** in `taskService.ts` with actual Supabase calls
+5. **Test the integration** and handle any errors appropriately
+
+## Mock Data
+
+The application comes with sample tasks to help you see the UI in action:
+
+- Setup Supabase Database (Completed, High Priority)
+- Implement Authentication (In Progress, High Priority)
+- Design Task Dashboard (Pending, Medium Priority)
+
+You can interact with these tasks to understand the functionality before connecting to your database.
+
+## Contributing
+
+Feel free to extend this application with additional features like:
+
+- User authentication
+- Team collaboration
+- File attachments
+- Comments and notes
+- Time tracking
+- Task categories/tags
+
+Enjoy building your task tracker! 🚀
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
