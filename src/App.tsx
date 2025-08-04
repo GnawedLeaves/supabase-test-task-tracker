@@ -6,8 +6,13 @@ import TaskTable from "./components/TaskTable";
 import TaskStats from "./components/TaskStats";
 import TaskFilters from "./components/TaskFilters";
 import { Task, CreateTaskRequest, UpdateTaskRequest } from "./types/Task";
-import { taskService } from "./services/taskService";
 import "./App.css";
+import {
+  createTask,
+  deleteTask,
+  getTasks,
+  updateTask,
+} from "./services/myTaskService";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -31,7 +36,8 @@ function App() {
   const loadTasks = async () => {
     setLoading(true);
     try {
-      const fetchedTasks = await taskService.getAllTasks();
+      const fetchedTasks = await getTasks();
+      console.log({ fetchedTasks });
       setTasks(fetchedTasks);
     } catch (error) {
       message.error("Failed to load tasks");
@@ -43,8 +49,9 @@ function App() {
 
   const handleCreateTask = async (taskData: CreateTaskRequest) => {
     try {
-      const newTask = await taskService.createTask(taskData);
-      setTasks((prev) => [newTask, ...prev]);
+      const newTask = await createTask(taskData);
+      console.log({ newTask });
+      loadTasks();
     } catch (error) {
       message.error("Failed to create task");
       throw error;
@@ -55,14 +62,11 @@ function App() {
     if (!editingTask) return;
 
     try {
-      const updateData: UpdateTaskRequest = {
-        ...taskData,
-        id: editingTask.id,
-      };
-      const updatedTask = await taskService.updateTask(updateData);
-      setTasks((prev) =>
-        prev.map((task) => (task.id === editingTask.id ? updatedTask : task))
-      );
+      const updatedTask = await updateTask(editingTask.id, taskData);
+      loadTasks();
+      // setTasks((prev) =>
+      //   prev.map((task) => (task.id === editingTask.id ? updatedTask : task))
+      // );
     } catch (error) {
       message.error("Failed to update task");
       throw error;
@@ -71,8 +75,10 @@ function App() {
 
   const handleDeleteTask = async (taskId: string) => {
     try {
-      await taskService.deleteTask(taskId);
-      setTasks((prev) => prev.filter((task) => task.id !== taskId));
+      const deleteRes = await deleteTask(taskId);
+      console.log({ deleteRes });
+      loadTasks();
+      // setTasks((prev) => prev.filter((task) => task.id !== taskId));
       message.success("Task deleted successfully");
     } catch (error) {
       message.error("Failed to delete task");

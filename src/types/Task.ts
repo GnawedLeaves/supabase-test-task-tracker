@@ -6,7 +6,7 @@ export interface Task {
   priority: "low" | "medium" | "high";
   dueDate?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface CreateTaskRequest {
@@ -15,6 +15,7 @@ export interface CreateTaskRequest {
   status: "pending" | "in-progress" | "completed";
   priority: "low" | "medium" | "high";
   dueDate?: string;
+  updated_at?: string;
 }
 
 export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {

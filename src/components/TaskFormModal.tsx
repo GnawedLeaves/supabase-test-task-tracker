@@ -34,6 +34,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
         dueDate: values.dueDate
           ? dayjs(values.dueDate).toISOString()
           : undefined,
+        updated_at: new Date().toISOString(),
       };
 
       await onSubmit(taskData);
