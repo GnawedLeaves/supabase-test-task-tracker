@@ -96,13 +96,13 @@ const TaskTable: React.FC<TaskTableProps> = ({
     },
     {
       title: "Due Date",
-      dataIndex: "dueDate",
-      key: "dueDate",
+      dataIndex: "due_date",
+      key: "due_date",
       width: 120,
-      render: (dueDate: string) => {
-        if (!dueDate) return "-";
+      render: (due_date: string) => {
+        if (!due_date) return "-";
 
-        const date = dayjs(dueDate);
+        const date = dayjs(due_date);
         const isOverdue = date.isBefore(dayjs(), "day");
 
         return (
@@ -117,10 +117,19 @@ const TaskTable: React.FC<TaskTableProps> = ({
     },
     {
       title: "Created",
-      dataIndex: "createdAt",
+      dataIndex: "created_at",
       key: "createdAt",
       width: 120,
-      render: (createdAt: string) => dayjs(createdAt).format("MMM DD, YYYY"),
+      render: (createdAt: string) =>
+        dayjs(createdAt).format("DD MMM YYYY, HH:mm:ss"),
+    },
+    {
+      title: "Updated",
+      dataIndex: "updated_at",
+      key: "updatedAt",
+      width: 120,
+      render: (updated_at: string) =>
+        dayjs(updated_at).format("DD MMM YYYY, HH:mm:ss"),
     },
     {
       title: "Actions",

@@ -31,8 +31,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
 
       const taskData: CreateTaskRequest = {
         ...values,
-        dueDate: values.dueDate
-          ? dayjs(values.dueDate).toISOString()
+        due_date: values.due_date
+          ? dayjs(values.due_date).toISOString()
           : undefined,
         updated_at: new Date().toISOString(),
       };
@@ -70,8 +70,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
         layout="vertical"
         initialValues={{
           ...initialValues,
-          dueDate: initialValues?.dueDate
-            ? dayjs(initialValues.dueDate)
+          due_date: initialValues?.due_date
+            ? dayjs(initialValues.due_date)
             : undefined,
         }}
       >
@@ -111,7 +111,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
           </Select>
         </Form.Item>
 
-        <Form.Item name="dueDate" label="Due Date">
+        <Form.Item name="due_date" label="Due Date">
           <DatePicker
             style={{ width: "100%" }}
             placeholder="Select due date (optional)"

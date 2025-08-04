@@ -4,9 +4,9 @@ export interface Task {
   description?: string;
   status: "pending" | "in-progress" | "completed";
   priority: "low" | "medium" | "high";
-  dueDate?: string;
-  createdAt: string;
-  updatedAt?: string;
+  due_date?: string;
+  created_at: string;
+  updated_at?: string;
 }
 
 export interface CreateTaskRequest {
@@ -14,7 +14,7 @@ export interface CreateTaskRequest {
   description?: string;
   status: "pending" | "in-progress" | "completed";
   priority: "low" | "medium" | "high";
-  dueDate?: string;
+  due_date?: string;
   updated_at?: string;
 }
 

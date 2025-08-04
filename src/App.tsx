@@ -192,7 +192,7 @@ function App() {
                 description: editingTask.description,
                 status: editingTask.status,
                 priority: editingTask.priority,
-                dueDate: editingTask.dueDate,
+                due_date: editingTask.due_date,
               }
             : undefined
         }
