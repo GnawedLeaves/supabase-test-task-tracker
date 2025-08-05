@@ -5,6 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { supabase } from "../supabase-client";
 
 interface User {
   id: string;
@@ -95,15 +96,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signUp = async (email: string, password: string) => {
     try {
-      // TODO: Replace with actual Supabase authentication
-      // const { data, error } = await supabase.auth.signUp({
-      //   email,
-      //   password,
-      // });
-
-      // if (error) throw error;
-
-      // Mock signup - don't automatically sign in
+      const error = supabase.auth.signUp({ email, password });
+      if (error) console.error("Error signing up", error);
       console.log("Mock signup successful for:", email);
     } catch (error) {
       console.error("Sign up error:", error);
